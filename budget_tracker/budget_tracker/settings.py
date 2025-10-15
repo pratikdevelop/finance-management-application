@@ -166,6 +166,12 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+# Add this to see more details
+if DEBUG:
+    # These help with debugging
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    
 # Security settings for production
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True

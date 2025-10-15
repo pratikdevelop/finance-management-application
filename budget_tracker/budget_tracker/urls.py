@@ -16,16 +16,43 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token
+from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.authtoken.views import obtain_auth_token
+
+# Health check view
+def health_check(request):
+    return HttpResponse("✅ Budget Tracker API is running!")
+
+# Debug info view
+def debug_info(request):
+    import os
+    info = {
+        "status": "running",
+        "debug": settings.DEBUG,
+        "allowed_hosts": settings.ALLOWED_HOSTS,
+        "database_engine": settings.DATABASES['default']['ENGINE'],
+    }
+    from django.http import JsonResponse
+    return JsonResponse(info)
+
 urlpatterns = [
+    # Root and health endpoints
+    path('', health_check, name='home'),
+    path('health/', health_check, name='health'),
+    path('debug/', debug_info, name='debug'),
+    
+    # Admin
     path('admin/', admin.site.urls),
+    
+    # API endpoints
     path('api/', include('budget.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
 ]
+
 # Serve static and media files in development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
