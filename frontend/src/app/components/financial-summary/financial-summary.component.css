@@ -1,0 +1,89 @@
+/* .chart-container {
+  width: 100%;
+  margin: 1rem 0;
+  position: relative;
+  height: 300px; 
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 200px; 
+  }
+}
+
+.card {
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.text-success {
+  color: #4CAF50;
+}
+
+.text-danger {
+  color: #F44336;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+} */
+
+
+:host {
+  display: block;
+}
+
+.summary-card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.chart-card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.chart {
+  width: 100%;
+  position: relative;
+}
+
+/* // Custom styles for the month picker */
+.month-picker {
+  .mat-calendar-period-button {
+    pointer-events: none;
+  }
+  
+  .mat-calendar-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .summary-card,
+  .chart-card {
+    margin-bottom: 1rem;
+  }
+}

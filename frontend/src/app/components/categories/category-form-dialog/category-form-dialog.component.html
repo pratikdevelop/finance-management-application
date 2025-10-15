@@ -1,0 +1,142 @@
+<div class="w-full max-w-2xl mx-auto mt-8 p-4">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <!-- Header -->
+    <div class="mb-6 pb-4 border-b border-gray-200">
+      <h2 class="text-2xl font-bold text-gray-800">
+        {{ isEditing ? 'Edit Category' : 'Add Category' }}
+      </h2>
+    </div>
+
+    <!-- Form Content -->
+    <div class="w-full">
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Category Name -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label class="text-gray-700">Category Name</mat-label>
+          <input 
+            matInput 
+            id="name" 
+            formControlName="name" 
+            placeholder="e.g., Groceries, Salary, Entertainment"
+            class="text-gray-900"
+          >
+          <mat-icon matPrefix class="text-slate-800 mr-2">category</mat-icon>
+          <mat-error *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" class="text-red-600 text-sm">
+            Name is required and must be at least 2 characters.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Category Type -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label class="text-gray-900">Category Type</mat-label>
+          <mat-select id="type" formControlName="type" class="text-gray-900">
+            <mat-option value="expense" class="text-gray-900">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <span>Expense</span>
+              </div>
+            </mat-option>
+            <mat-option value="income" class="text-gray-900">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span>Income</span>
+              </div>
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="categoryForm.get('type')?.invalid && categoryForm.get('type')?.touched" class="text-red-600 text-sm">
+            Type is required.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label class="text-gray-900">Description (Optional)</mat-label>
+          <textarea 
+            matInput 
+            id="description" 
+            formControlName="description" 
+            rows="3"
+            placeholder="Add a description for this category..."
+            class="text-gray-900 resize-none"
+          ></textarea>
+          <mat-icon matPrefix class="text-slate-800 mr-2">description</mat-icon>
+        </mat-form-field>
+
+        <!-- Color Picker -->
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-gray-700">Color</label>
+          <div class="flex items-center gap-4 p-3 border border-gray-300 rounded-lg bg-gray-50">
+            <input 
+              type="color" 
+              id="color" 
+              formControlName="color" 
+              title="Choose category color"
+              class="w-12 h-12 rounded-lg border border-gray-300 cursor-pointer"
+            >
+            <div class="flex-1">
+              <p class="text-sm text-gray-900"> 
+                Choose a color to identify this category in your charts and reports
+              </p>
+              <p class="text-xs text-gray-900 mt-1">
+                Current color: {{ categoryForm.get('color')?.value || '#3b82f6' }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div *ngIf="categoryForm.get('name')?.value" class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <h4 class="text-sm font-medium text-gray-700 mb-2">Preview</h4>
+          <div class="flex items-center gap-3">
+            <div 
+              class="w-8 h-8 rounded-full border border-gray-300 shadow-sm" 
+              [style.background-color]="categoryForm.get('color')?.value || '#3b82f6'"
+            ></div>
+            <div>
+              <span class="font-medium text-gray-900">{{ categoryForm.get('name')?.value }}</span>
+              <span 
+                class="ml-2 px-2 py-1 rounded-full text-xs font-medium"
+                [ngClass]="{
+                  'bg-red-100 text-red-800': categoryForm.get('type')?.value === 'expense',
+                  'bg-green-100 text-green-800': categoryForm.get('type')?.value === 'income'
+                }"
+              >
+                {{ (categoryForm.get('type')?.value || 'expense') | titlecase }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
+          <button 
+            mat-stroked-button 
+            type="button" 
+            (click)="onCancel()" 
+            [disabled]="isSubmitting"
+            class="flex-1 sm:flex-none px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Cancel
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            [disabled]="categoryForm.invalid || isSubmitting"
+            >
+            <mat-spinner *ngIf="isSubmitting" diameter="20" class="!w-5 !h-5"></mat-spinner>
+            <span>{{ isEditing ? 'Update Category' : 'Add Category' }}</span>
+          </button>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div class="flex items-center gap-2">
+            <mat-icon class="text-red-500">error</mat-icon>
+            <span class="text-red-900 font-medium">{{ errorMessage }}</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

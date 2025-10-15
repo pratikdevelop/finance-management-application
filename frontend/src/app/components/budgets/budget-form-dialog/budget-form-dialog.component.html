@@ -1,0 +1,102 @@
+  <!-- Header -->
+  <div class="p-3 ">
+
+    <h2 mat-dialog-title class="text-2xl font-bold text-slate-900  p-4">
+      {{ isEditing ? 'Edit Budget' : 'Add New Budget' }}
+    </h2>
+    <mat-dialog-content class="p-3 mt-4">
+      <form [formGroup]="budgetForm"  class="space-y-4">
+          <!-- Amount Field -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-800">Amount</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              formControlName="amount" 
+              placeholder="e.g., 500.00"
+              class="text-slate-900"
+            >
+            <mat-icon matSuffix class="text-slate-400">attach_money</mat-icon>
+            <mat-error *ngIf="budgetForm.get('amount')?.invalid && budgetForm.get('amount')?.touched" class="text-red-400 text-sm">
+              Amount is required and must be a positive number.
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Category Field -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-800">Category</mat-label>
+            <mat-select formControlName="category" class="text-slate-900">
+              <mat-option *ngFor="let category of categories" [value]="category.id" class="text-slate-800">
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="budgetForm.get('category')?.invalid && budgetForm.get('category')?.touched" class="text-red-400 text-sm">
+              Category is required.
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Month Field -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-800">Month</mat-label>
+            <mat-select formControlName="month" class="text-slate-900">
+              <mat-option value="01" class="text-slate-800">January</mat-option>
+              <mat-option value="02" class="text-slate-800">February</mat-option>
+              <mat-option value="03" class="text-slate-800">March</mat-option>
+              <mat-option value="04" class="text-slate-800">April</mat-option>
+              <mat-option value="05" class="text-slate-800">May</mat-option>
+              <mat-option value="06" class="text-slate-800">June</mat-option>
+              <mat-option value="07" class="text-slate-800">July</mat-option>
+              <mat-option value="08" class="text-slate-800">August</mat-option>
+              <mat-option value="09" class="text-slate-800">September</mat-option>
+              <mat-option value="10" class="text-slate-800">October</mat-option>
+              <mat-option value="11" class="text-slate-800">November</mat-option>
+              <mat-option value="12" class="text-slate-800">December</mat-option>
+            </mat-select>
+            <mat-error *ngIf="budgetForm.get('month')?.invalid && budgetForm.get('month')?.touched" class="text-red-400 text-sm">
+              Month is required.
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Year Field -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="text-slate-800">Year</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              formControlName="year" 
+              placeholder="e.g., 2023"
+              class="text-slate-900"
+            >
+            <mat-icon matSuffix class="text-slate-400">calendar_today</mat-icon>
+            <mat-error *ngIf="budgetForm.get('year')?.invalid && budgetForm.get('year')?.touched" class="text-red-400 text-sm">
+              Year is required.
+            </mat-error>
+          </mat-form-field>
+  
+  
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions class="flex flex-col sm:flex-row justify-end gap-3 pt-4">
+  
+          <button 
+            mat-stroked-button 
+            type="button" 
+            (click)="onCancel()" 
+            [disabled]="isSubmitting"
+            class="flex-1 sm:flex-none px-6 py-2 border border-slate-600 text-slate-300 hover:bg-slate-700 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Cancel
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            (click)="onSubmit()"
+            [disabled]="budgetForm.invalid || isSubmitting"
+            class="flex-1 sm:flex-none px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <mat-spinner *ngIf="isSubmitting" diameter="20" class="!w-5 !h-5"></mat-spinner>
+            <span>{{ isEditing ? 'Update Budget' : 'Add Budget' }}</span>
+          </button>
+    </mat-dialog-actions>
+  </div>

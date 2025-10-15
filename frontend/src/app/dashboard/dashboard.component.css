@@ -1,0 +1,38 @@
+/* financial-dashboard.component.css */
+:host {
+  display: block;
+}
+
+/* Custom scrollbar for transactions */
+.transaction-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.transaction-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.transaction-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.transaction-list::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: 10px;
+}
+
+.transaction-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Animation for cards on hover */
+.budget-card, .transaction-card, .insight-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.budget-card:hover, .transaction-card:hover, .insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}

@@ -1,0 +1,182 @@
+<div class="flex flex-col relative h-full w-full bg-gray-50 py-8">
+  <div class=" px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Sidebar/Info Section (if needed in the future) -->
+      <div class="w-full lg:w-1/3">
+        <!-- You can add sidebar content here if needed -->
+      </div>
+      
+      <!-- Main Content -->
+      <div class="w-full">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden ">
+          <!-- Header -->
+          <div class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Categories</h2>
+                        <!-- Add Category Button -->
+            <div class="mb-6">
+              <button 
+                mat-raised-button 
+                color="primary" 
+                (click)="openCategoryDialog()"
+                class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 shadow-sm"
+              >
+                <mat-icon class="text-white text-lg">add</mat-icon> 
+                Add New Category
+              </button>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+            <!-- Filter Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" [formGroup]="filterForm">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Filter by Name</mat-label>
+                <input matInput formControlName="name" placeholder="Search categories...">
+                <mat-icon matSuffix class="text-gray-400">search</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Filter by Type</mat-label>
+                <mat-select formControlName="type">
+                  <mat-option value="">All Types</mat-option>
+                  <mat-option value="income">Income</mat-option>
+                  <mat-option value="expense">Expense</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+
+            <!-- Loading State -->
+            <div *ngIf="loading" class="flex justify-center items-center py-12">
+              <mat-spinner diameter="40"></mat-spinner>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage && !loading" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <div class="flex items-center gap-2">
+                <mat-icon class="text-red-500">error</mat-icon>
+                <span class="text-red-700 font-medium">{{ errorMessage }}</span>
+              </div>
+            </div>
+
+            <!-- Categories Table -->
+            <div *ngIf="!loading && !errorMessage && categories.length > 0" class="overflow-hidden rounded-lg border border-gray-200">
+              <div class="overflow-x-auto">
+                <table mat-table [dataSource]="categories" matSort class="w-full min-w-full">
+                  <!-- Color Column -->
+                  <ng-container matColumnDef="color">
+                    <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Color
+                    </th>
+                    <td mat-cell *matCellDef="let category" class="px-4 py-3">
+                      <div 
+                        class="w-8 h-8 rounded-full border border-gray-300 shadow-sm" 
+                        [style.background-color]="category.color"
+                        [title]="category.color"
+                      ></div>
+                    </td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Name
+                    </th>
+                    <td mat-cell *matCellDef="let category" class="px-4 py-3 text-sm font-medium text-gray-900">
+                      {{category.name}}
+                    </td>
+                  </ng-container>
+
+                  <!-- Type Column -->
+                  <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Type
+                    </th>
+                    <td mat-cell *matCellDef="let category" class="px-4 py-3">
+                      <span 
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                        [ngClass]="{
+                          'bg-green-100 text-green-800': category.type === 'income',
+                          'bg-red-100 text-red-800': category.type === 'expense'
+                        }"
+                      >
+                        {{category.type | titlecase}}
+                      </span>
+                    </td>
+                  </ng-container>
+
+                  <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Actions
+                    </th>
+                    <td mat-cell *matCellDef="let category" class="px-4 py-3">
+                      <div class="flex items-center gap-1">
+                        <button 
+                          mat-icon-button 
+                          color="accent" 
+                          (click)="editCategory(category)"
+                          class="text-blue-600 hover:bg-blue-50 rounded-full p-1 transition-colors duration-200"
+                          title="Edit category"
+                        >
+                          <mat-icon class="text-lg">edit</mat-icon>
+                        </button>
+                        <button 
+                          mat-icon-button 
+                          color="warn" 
+                          (click)="deleteCategory(category.id)"
+                          class="text-red-600 hover:bg-red-50 rounded-full p-1 transition-colors duration-200"
+                          title="Delete category"
+                        >
+                          <mat-icon class="text-lg">delete</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+                  <tr 
+                    mat-row 
+                    *matRowDef="let row; columns: displayedColumns;" 
+                    class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150"
+                  ></tr>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <div class="border-t border-gray-200 bg-white px-4 py-3">
+                <mat-paginator 
+                  [pageSizeOptions]="[5, 10, 20]" 
+                  showFirstLastButtons
+                  class="bg-transparent"
+                ></mat-paginator>
+              </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="!loading && !errorMessage && categories.length === 0" class="text-center py-12">
+              <div class="max-w-md mx-auto">
+                <div class="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <mat-icon class="text-gray-500">category</mat-icon>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No categories found</h3>
+                <p class="text-gray-500 mb-6">Add a new category to get started with organizing your finances!</p>
+                <button 
+                  mat-raised-button 
+                  color="primary" 
+                  (click)="openCategoryDialog()"
+                  class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 mx-auto"
+                >
+                  <mat-icon class="text-white">add</mat-icon>
+                  Create Your First Category
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

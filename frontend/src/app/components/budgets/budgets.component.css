@@ -1,0 +1,16 @@
+.month-year-datepicker .mat-calendar-table-header,
+.month-year-datepicker .mat-calendar-content .mat-calendar-table tbody tr:not(:first-child) {
+  display: none;
+}
+
+.month-year-datepicker .mat-calendar-content .mat-calendar-table tbody tr:first-child {
+  display: none;
+}
+
+.month-year-datepicker .mat-calendar-content .mat-calendar-table tbody tr:first-child .mat-calendar-body-cell {
+  visibility: hidden;
+}
+
+.month-year-datepicker .mat-calendar-content .mat-calendar-table tbody tr:first-child .mat-calendar-body-cell:first-child {
+  visibility: visible;
+}

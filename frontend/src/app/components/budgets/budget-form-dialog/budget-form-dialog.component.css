@@ -1,0 +1,70 @@
+.mat-mdc-card {
+  padding: 20px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.mat-mdc-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #3f51b5; /* Primary color */
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.mat-mdc-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.mat-mdc-raised-button {
+  padding: 8px 20px;
+  font-size: 1rem;
+}
+
+.mat-mdc-spinner {
+  margin-right: 8px;
+}
+
+.text-red-600 {
+  color: #dc2626;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .mat-mdc-card {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .mat-mdc-card-title {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+  }
+
+  .flex-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mat-mdc-raised-button {
+    width: 100%;
+  }
+}
