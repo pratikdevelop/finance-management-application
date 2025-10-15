@@ -1,4 +1,4 @@
 export const environment = {
-    apiUrl: "http://localhost:8000",
+    apiUrl: "https://finance-management-application-3omi.onrender.com/",
     appTitle: 'FinDash'
 };
