@@ -75,8 +75,8 @@ export class TransactionsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.paginator.page.subscribe(() => this.loadTransactions());
-    this.sort.sortChange.subscribe(() => {
+    this.paginator?.page?.subscribe(() => this.loadTransactions());
+    this.sort?.sortChange?.subscribe(() => {
       this.paginator?.firstPage();
       this.loadTransactions();
     });
