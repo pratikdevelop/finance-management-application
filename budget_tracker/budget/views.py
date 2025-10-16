@@ -298,11 +298,20 @@ def signup(request):
             password=password
         )
         UserProfile.objects.create(user=user)
-        
-        return Response(
-            {'message': 'User created successfully', 'user_id': user.id},
-            status=status.HTTP_201_CREATED
-        )
+
+        authenticated_user = authenticate(request, username=username, password=password)
+
+        if authenticated_user is not None:
+            token, created = Token.objects.get_or_create(user=authenticated_user)
+            return Response(
+                {'message': 'User created successfully', 'token': token.key, 'username': authenticated_user.username},
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {'error': 'Authentication failed after user creation'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         
     except Exception as e:
         return Response(
