@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -19,7 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { environment } from '../../../environments/environment';
+import { ApiService } from '../../services/api.service';
 
 interface Category {
   id: number;
@@ -87,7 +85,7 @@ export class BudgetsComponent implements OnInit {
   totalItems: number = 0;
   displayedColumns: string[] = ['category', 'period', 'allocatedAmount', 'spentAmount', 'remainingAmount', 'progress', 'status', 'actions'];
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private apiService: ApiService) {
     const today = new Date();
     this.selectedMonth = today.getMonth() + 1; // Month is 0-indexed
     this.selectedYear = today.getFullYear();
@@ -177,10 +175,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   loadCategories(): void {
-    const token = this.authService.getToken();
-    this.http.get<any>(`${environment.apiUrl}/api/categories/`, {
-      headers: { Authorization: `Token ${token}` }
-    }).subscribe(
+    this.apiService.getCategories().subscribe(
       data => {
         this.categories = data.results.filter((category: any) => category.type === 'expense');
       },
@@ -191,15 +186,11 @@ export class BudgetsComponent implements OnInit {
   }
 
   loadBudgets(): void {
-    const token = this.authService.getToken();
-    this.http.get<any>(`${environment.apiUrl}/api/budgets/`, {
-      headers: { Authorization: `Token ${token}` },
-      params: {
-        month: this.selectedMonth.toString(),
-        year: this.selectedYear.toString(),
-        page: (this.pageIndex + 1).toString(),
-        page_size: this.pageSize.toString()
-      }
+    this.apiService.getBudgets({
+      month: this.selectedMonth.toString(),
+      year: this.selectedYear.toString(),
+      page: (this.pageIndex + 1).toString(),
+      page_size: this.pageSize.toString()
     }).subscribe(
       data => {
         this.budgets = data.results.map((budget: any) => ({
@@ -215,11 +206,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   loadBudgetComparison(): void {
-    const token = this.authService.getToken();
-    this.http.get<ComparisonData[]>(`${environment.apiUrl}/api/budget-comparison/`, {
-      headers: { Authorization: `Token ${token}` },
-      params: { month: `${this.selectedYear}-${this.formatMonth(this.selectedMonth)}` }
-    }).subscribe(
+    this.apiService.getBudgetComparison(`${this.selectedYear}-${this.formatMonth(this.selectedMonth)}`).subscribe(
       data => {
         console.log('Comparison Data:', data); // Add this line
         this.comparisonData = data;
@@ -265,13 +252,10 @@ export class BudgetsComponent implements OnInit {
   }
 
   addBudget(): void {
-    const token = this.authService.getToken();
     if (this.newBudget.category && this.newBudget.amount) {
       this.newBudget.month = this.selectedMonth;
       this.newBudget.year = this.selectedYear;
-      this.http.post<Budget>(`${environment.apiUrl}/api/budgets/`, this.newBudget, {
-        headers: { Authorization: `Token ${token}` }
-      }).subscribe(
+      this.apiService.createBudget(this.newBudget).subscribe(
         response => {
           this.loadBudgets();
           this.loadBudgetComparison();
@@ -285,10 +269,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   updateBudget(budget: Budget): void {
-    const token = this.authService.getToken();
-    this.http.put<Budget>(`${environment.apiUrl}/api/budgets/${budget.id}/`, budget, {
-      headers: { Authorization: `Token ${token}` }
-    }).subscribe(
+    this.apiService.updateBudget(budget.id!, budget).subscribe(
       response => {
         this.loadBudgets();
         this.loadBudgetComparison();
@@ -300,10 +281,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   deleteBudget(id: number): void {
-    const token = this.authService.getToken();
-    this.http.delete(`${environment.apiUrl}/api/budgets/${id}/`, {
-      headers: { Authorization: `Token ${token}` }
-    }).subscribe(
+    this.apiService.deleteBudget(id).subscribe(
       response => {
         this.loadBudgets();
         this.loadBudgetComparison();
