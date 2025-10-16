@@ -89,7 +89,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:4200",
     "http://localhost:3000",
     "https://finance-management-appli-47755.web.app",
-    "https://finance-managemen-app.netlify.app/",
+    "https://finance-managemen-app.netlify.app",
     "https://finance-management-application-3omi.onrender.com"
 ]
 
@@ -224,6 +224,6 @@ if not DEBUG:
     CORS_ALLOW_ALL_ORIGINS = False
     CORS_ALLOWED_ORIGINS = [
         "https://finance-management-appli-47755.web.app",
-        "https://finance-managemen-app.netlify.app/",
+        "https://finance-managemen-app.netlify.app",
         "https://finance-management-application-3omi.onrender.com",
     ]
