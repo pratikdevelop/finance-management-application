@@ -221,9 +221,10 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     
     # More restrictive CORS in production
-    CORS_ALLOW_ALL_ORIGINS = False
-    CORS_ALLOWED_ORIGINS = [
-        "https://finance-management-appli-47755.web.app",
-        "https://finance-managemen-app.netlify.app",
-        "https://finance-management-application-3omi.onrender.com",
-    ]
+    CORS_ALLOW_ALL_ORIGINS = True
+    # CORS_ALLOWED_ORIGINS = [
+    #     "http://localhost:4200",
+    #     "https://finance-management-appli-47755.web.app",
+    #     "https://finance-managemen-app.netlify.app",
+    #     "https://finance-management-application-3omi.onrender.com",
+    # ]

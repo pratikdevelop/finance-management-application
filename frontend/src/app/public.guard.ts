@@ -1,6 +1,8 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +10,15 @@ import { AuthService } from './services/auth.service';
 export class PublicGuard {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(): boolean {
-    if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
-      return false;
-    }
-    return true;
+  canActivate(): Observable<boolean | UrlTree> {
+    return this.authService.isLoggedIn().pipe(
+      map(isLoggedIn => {
+        if (isLoggedIn) {
+          return this.router.createUrlTree(['/dashboard']);
+        }
+        return true;
+      })
+    );
   }
 }
 

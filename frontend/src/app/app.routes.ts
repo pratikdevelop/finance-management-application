@@ -6,7 +6,7 @@ import { publicGuard } from './public.guard';
 
 export const routes: Routes = [
   { path: 'auth/signup', 
-    loadComponent: () => import('./components/signup/signup.component').then((m) => m.SignupComponent),
+    component: SignupComponent,
     canActivate: [publicGuard]
    },
   {
