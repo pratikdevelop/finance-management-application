@@ -1,11 +1,13 @@
-# AI-finance Project
+# finance Project
 
 This project consists of a Django backend and an Angular frontend for a personal finance tracker.
 
 ## Server URLs
 
-- **Backend API:** `http://127.0.0.1:8000/`
-- **Frontend Application:** `http://localhost:4200/`
+- **Backend API (Local):** `http://127.0.0.1:8000/`
+- **Backend API (Deployed):** `https://finance-management-application-3omi.onrender.com`
+- **Frontend Application (Local):** `http://localhost:4200/`
+- **Frontend Application (Deployed - Netlify):** `https://finance-managemen-app.netlify.app`
 
 ## GitHub Repository
 
