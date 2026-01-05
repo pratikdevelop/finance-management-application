@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = environment.apiUrl + '/api/';
+  private baseUrl = `${environment.apiUrl}api/`;
 
   constructor(private http: HttpClient, private authService: AuthService, private snackBar: MatSnackBar) { }
 
@@ -41,6 +41,10 @@ export class ApiService {
     }
     this.snackBar.open(errorMessage, 'Close', { duration: 5000 });
     return throwError(() => new Error(errorMessage));
+  }
+
+  getRecurringTransactionSummary(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/recurring-transactions/summary_statistics/`);
   }
 
   getFinancialSummary(start_date?: string, end_date?: string): Observable<any> {
@@ -75,12 +79,19 @@ export class ApiService {
   public getCategories(params?: any): Observable<any> {
     let httpParams = new HttpParams();
     if (params) {
-      for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-          httpParams = httpParams.set(key, params[key]);
-        }
+      if (typeof(params) != 'string') {
+
+        for (const key in params) {
+          if (params.hasOwnProperty(key)) {
+            httpParams = httpParams.set(key, params[key]);
+          }
+          }
+      } else {
+      httpParams = httpParams.append('type', params);
+
       }
     }
+
     return this.http.get(`${this.baseUrl}categories/`, { headers: this.getHeaders(), params: httpParams })
       .pipe(
         catchError(this.handleError.bind(this))
@@ -208,4 +219,21 @@ public getBudgetComparison(month: string, params?: any): Observable<any> {
         catchError(this.handleError.bind(this))
       );
   }
+
+  public analyzeExpenses(expensesData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}analyze-expenses/`, expensesData, { headers: this.getHeaders() })
+      .pipe(
+        catchError(this.handleError.bind(this))
+      );
+  }
+
+
+  // getCategories(type?: string): Observable<any> {
+  //   let params = new HttpParams();
+  //   if (type) {
+  //     params = params.append('type', type);
+  //   }
+  //   return this.http.get(`${environment.apiUrl}/api/categories/`, { params });
+  // }
+
 }

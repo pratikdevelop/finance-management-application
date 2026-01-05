@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.css'
 })
@@ -28,10 +28,18 @@ export class NavigationComponent {
   logout() {
     this.authService.logout();
     console.log('User logged out');
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/']);
   }
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
+  navigateToSignup() {
+    this.router.navigate(['/auth/signup']);
   }
 }

@@ -41,7 +41,9 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
   summaryData: any = null;
   loading = true;
   error: string | null = null;
-  private tokenSubscription!: Subscription;
+  tokenSubscription: Subscription | undefined;
+  recurringTransactionSummary: any;
+
   selectedDate: Date | null = new Date();
   startDate: Date | null = new Date();
   endDate: Date | null = new Date();
@@ -56,6 +58,7 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
     this.tokenSubscription = this.authService.token$.subscribe(token => {
       if (token) {
         this.loadFinancialSummary();
+        this.loadRecurringTransactionSummary();
       }
     });
   }
@@ -171,7 +174,11 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
     const element = this.incomeExpenseChartContainer.nativeElement;
     const data = [
       { label: 'Income', value: this.summaryData.total_income, color: '#4CAF50' },
-      { label: 'Expenses', value: this.summaryData.total_expenses, color: '#F44336' }
+      { label: 'Expenses', value: this.summaryData.total_expenses, color: '#F44336' },
+      { label: 'Transfers', value: this.summaryData.total_transfers || 0, color: '#2196F3' },
+      { label: 'Investments', value: this.summaryData.total_investments || 0, color: '#FFC107' },
+      { label: 'Loans', value: this.summaryData.total_loans || 0, color: '#9C27B0' },
+      { label: 'Savings', value: this.summaryData.total_savings || 0, color: '#00BCD4' }
     ];
 
     // Clear previous chart if any
@@ -429,6 +436,58 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
       .attr('stroke-width', 3)
       .attr('d', expenseLine);
 
+    // Transfer line
+    const transferLine = d3.line<any>()
+      .x(d => (x(d.month) || 0) + x.bandwidth() / 2)
+      .y(d => y(d.transfers))
+      .curve(d3.curveMonotoneX);
+
+    chart.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#2196F3')
+      .attr('stroke-width', 3)
+      .attr('d', transferLine);
+
+    // Investment line
+    const investmentLine = d3.line<any>()
+      .x(d => (x(d.month) || 0) + x.bandwidth() / 2)
+      .y(d => y(d.investments))
+      .curve(d3.curveMonotoneX);
+
+    chart.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#FFC107')
+      .attr('stroke-width', 3)
+      .attr('d', investmentLine);
+
+    // Loan line
+    const loanLine = d3.line<any>()
+      .x(d => (x(d.month) || 0) + x.bandwidth() / 2)
+      .y(d => y(d.loans))
+      .curve(d3.curveMonotoneX);
+
+    chart.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#9C27B0')
+      .attr('stroke-width', 3)
+      .attr('d', loanLine);
+
+    // Saving line
+    const savingLine = d3.line<any>()
+      .x(d => (x(d.month) || 0) + x.bandwidth() / 2)
+      .y(d => y(d.savings))
+      .curve(d3.curveMonotoneX);
+
+    chart.append('path')
+      .datum(data)
+      .attr('fill', 'none')
+      .attr('stroke', '#00BCD4')
+      .attr('stroke-width', 3)
+      .attr('d', savingLine);
+
     // Add dots for data points
     chart.selectAll('.income-dot')
       .data(data)
@@ -485,6 +544,118 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
         d3.selectAll('.tooltip').remove();
       });
 
+    // Transfer dots
+    chart.selectAll('.transfer-dot')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', 'transfer-dot')
+      .attr('cx', (d: any) => (x(d.month) || 0) + x.bandwidth() / 2)
+      .attr('cy', (d: any) => y(d.transfers))
+      .attr('r', 4)
+      .attr('fill', '#2196F3')
+      .on('mouseover', function(event, d: any) {
+        const tooltip = d3.select('body').append('div')
+          .attr('class', 'tooltip')
+          .style('position', 'absolute')
+          .style('background', 'white')
+          .style('padding', '8px')
+          .style('border-radius', '4px')
+          .style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)')
+          .style('font-size', '12px')
+          .html(`<strong>${d.month}</strong><br>Transfers: $${d.transfers.toLocaleString()}`);
+        
+        tooltip.style('left', (event.pageX + 10) + 'px')
+               .style('top', (event.pageY - 10) + 'px');
+      })
+      .on('mouseout', function() {
+        d3.selectAll('.tooltip').remove();
+      });
+
+    // Investment dots
+    chart.selectAll('.investment-dot')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', 'investment-dot')
+      .attr('cx', (d: any) => (x(d.month) || 0) + x.bandwidth() / 2)
+      .attr('cy', (d: any) => y(d.investments))
+      .attr('r', 4)
+      .attr('fill', '#FFC107')
+      .on('mouseover', function(event, d: any) {
+        const tooltip = d3.select('body').append('div')
+          .attr('class', 'tooltip')
+          .style('position', 'absolute')
+          .style('background', 'white')
+          .style('padding', '8px')
+          .style('border-radius', '4px')
+          .style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)')
+          .style('font-size', '12px')
+          .html(`<strong>${d.month}</strong><br>Investments: $${d.investments.toLocaleString()}`);
+        
+        tooltip.style('left', (event.pageX + 10) + 'px')
+               .style('top', (event.pageY - 10) + 'px');
+      })
+      .on('mouseout', function() {
+        d3.selectAll('.tooltip').remove();
+      });
+
+    // Loan dots
+    chart.selectAll('.loan-dot')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', 'loan-dot')
+      .attr('cx', (d: any) => (x(d.month) || 0) + x.bandwidth() / 2)
+      .attr('cy', (d: any) => y(d.loans))
+      .attr('r', 4)
+      .attr('fill', '#9C27B0')
+      .on('mouseover', function(event, d: any) {
+        const tooltip = d3.select('body').append('div')
+          .attr('class', 'tooltip')
+          .style('position', 'absolute')
+          .style('background', 'white')
+          .style('padding', '8px')
+          .style('border-radius', '4px')
+          .style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)')
+          .style('font-size', '12px')
+          .html(`<strong>${d.month}</strong><br>Loans: $${d.loans.toLocaleString()}`);
+        
+        tooltip.style('left', (event.pageX + 10) + 'px')
+               .style('top', (event.pageY - 10) + 'px');
+      })
+      .on('mouseout', function() {
+        d3.selectAll('.tooltip').remove();
+      });
+
+    // Saving dots
+    chart.selectAll('.saving-dot')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', 'saving-dot')
+      .attr('cx', (d: any) => (x(d.month) || 0) + x.bandwidth() / 2)
+      .attr('cy', (d: any) => y(d.savings))
+      .attr('r', 4)
+      .attr('fill', '#00BCD4')
+      .on('mouseover', function(event, d: any) {
+        const tooltip = d3.select('body').append('div')
+          .attr('class', 'tooltip')
+          .style('position', 'absolute')
+          .style('background', 'white')
+          .style('padding', '8px')
+          .style('border-radius', '4px')
+          .style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)')
+          .style('font-size', '12px')
+          .html(`<strong>${d.month}</strong><br>Savings: $${d.savings.toLocaleString()}`);
+        
+        tooltip.style('left', (event.pageX + 10) + 'px')
+               .style('top', (event.pageY - 10) + 'px');
+      })
+      .on('mouseout', function() {
+        d3.selectAll('.tooltip').remove();
+      });
+
     // Enhanced Legend
     const legend = svg.append('g')
       .attr('transform', `translate(${width - margin.right - 120}, ${margin.top})`);
@@ -521,6 +692,70 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
       .style('fill', '#374151')
       .text('Expenses');
 
+    // Transfer legend
+    legend.append('rect')
+      .attr('x', 0)
+      .attr('y', 40)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', '#2196F3')
+      .attr('rx', 2);
+
+    legend.append('text')
+      .attr('x', 20)
+      .attr('y', 52.5)
+      .style('font-size', '12px')
+      .style('fill', '#374151')
+      .text('Transfers');
+
+    // Investment legend
+    legend.append('rect')
+      .attr('x', 0)
+      .attr('y', 60)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', '#FFC107')
+      .attr('rx', 2);
+
+    legend.append('text')
+      .attr('x', 20)
+      .attr('y', 72.5)
+      .style('font-size', '12px')
+      .style('fill', '#374151')
+      .text('Investments');
+
+    // Loan legend
+    legend.append('rect')
+      .attr('x', 0)
+      .attr('y', 80)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', '#9C27B0')
+      .attr('rx', 2);
+
+    legend.append('text')
+      .attr('x', 20)
+      .attr('y', 92.5)
+      .style('font-size', '12px')
+      .style('fill', '#374151')
+      .text('Loans');
+
+    // Saving legend
+    legend.append('rect')
+      .attr('x', 0)
+      .attr('y', 100)
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', '#00BCD4')
+      .attr('rx', 2);
+
+    legend.append('text')
+      .attr('x', 20)
+      .attr('y', 112.5)
+      .style('font-size', '12px')
+      .style('fill', '#374151')
+      .text('Savings');
+
     // Title
     svg.append('text')
       .attr('x', width / 2)
@@ -530,5 +765,17 @@ export class FinancialSummaryComponent implements OnInit, AfterViewInit, OnDestr
       .style('font-weight', 'bold')
       .style('fill', '#374151')
       .text('Monthly Income & Expenses Trend');
+  }
+
+  private loadRecurringTransactionSummary(): void {
+    this.apiService.getRecurringTransactionSummary().subscribe({
+      next: (data) => {
+        this.recurringTransactionSummary = data;
+        console.log('Recurring Transaction Summary:', this.recurringTransactionSummary);
+      },
+      error: (error) => {
+        console.error('Error loading recurring transaction summary:', error);
+      }
+    });
   }
 }

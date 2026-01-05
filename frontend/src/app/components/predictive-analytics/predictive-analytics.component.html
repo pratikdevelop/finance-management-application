@@ -1,0 +1,62 @@
+<div class="predictive-analytics-container">
+  <mat-card class="expense-input-card">
+    <mat-card-title>Analyze Your Expenses</mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let expense of expenses; let i = index" class="expense-item">
+        <mat-form-field appearance="outline" class="expense-field">
+          <mat-label>Description</mat-label>
+          <input matInput [(ngModel)]="expense.description" name="description_{{i}}" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="expense-field">
+          <mat-label>Amount</mat-label>
+          <input matInput type="number" [(ngModel)]="expense.amount" name="amount_{{i}}" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="expense-field">
+          <mat-label>Date</mat-label>
+          <input matInput type="date" [(ngModel)]="expense.date" name="date_{{i}}" required>
+        </mat-form-field>
+        <button mat-icon-button color="warn" (click)="removeExpense(i)" *ngIf="expenses.length > 1">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <button mat-button color="primary" (click)="addExpense()">
+        <mat-icon>add</mat-icon> Add Expense
+      </button>
+      <button mat-raised-button color="accent" (click)="analyzeExpenses()" [disabled]="loading" class="analyze-button">
+        <span *ngIf="!loading">Analyze Expenses</span>
+        <span *ngIf="loading">Analyzing...</span>
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="analysisResult" class="analysis-results-card">
+    <mat-card-title>Analysis Results</mat-card-title>
+    <mat-card-content>
+      <h3>Categorized Expenses:</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let expense of analysisResult.expenses">
+          <mat-icon matListItemIcon>label</mat-icon>
+          <div matListItemTitle>{{ expense.description }}</div>
+          <div matListItemLine>Amount: {{ expense.amount | currency }} | Category: {{ expense.category }}</div>
+        </mat-list-item>
+      </mat-list>
+
+      <h3>Category Statistics:</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let category of (analysisResult.stats | keyvalue)">
+          <mat-icon matListItemIcon>info</mat-icon>
+          <div matListItemTitle>{{ category.key }}</div>
+          <div matListItemLine>Total Spent: {{ category.value.sum | currency }} | Items: {{ category.value.count }}</div>
+        </mat-list-item>
+      </mat-list>
+
+      <h3>Recommendations:</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let recommendation of analysisResult.recommendations">
+          <mat-icon matListItemIcon>lightbulb</mat-icon>
+          <div matListItemTitle>{{ recommendation }}</div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,37 +1,67 @@
-<nav class="bg-gray-800 p-4">
-  <div class="container mx-auto flex justify-between items-center">
-    <a routerLink="/dashboard" class="text-white text-lg font-bold">AI-Finance</a>
+<div class="relative  flex flex-auto w-full px-4 sm:px-6 lg:px-8 border-b-2 border-gray-500">
+  <div class="flex justify-between items-center h-16 w-full">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <div class="flex-shrink-0 flex items-center">
+        <div class="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+          <i class="fas fa-chart-line text-white text-sm"></i>
+        </div>
+        <span class="ml-2 text-xl font-bold text-gray-900">FinDash</span>
+      </div>
+    </div>
+    <!-- Navigation Links (Logged Out) -->
+    <nav class="hidden md:flex space-x-8" *ngIf="!(isLoggedIn$ | async)">
+      <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Features</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Pricing</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">About</a>
+      <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Contact</a>
+    </nav>
+    <!-- Auth Buttons (Logged Out) -->
+    <div class="flex items-center space-x-4" *ngIf="!(isLoggedIn$ | async)">
+      <button (click)="navigateToLogin()"
+        class="text-indigo-600 hover:text-indigo-800 font-medium transition-colors duration-200">
+        Login
+      </button>
+      <button (click)="navigateToSignup()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
+        Sign Up
+      </button>
+    </div>
 
-    <!-- Mobile menu button -->
-    <div class="md:hidden">
-      <button (click)="toggleMobileMenu()" class="text-gray-300 hover:text-white focus:outline-none focus:text-white">
+    <!-- Mobile menu button (Logged In) -->
+    <div class="md:hidden" *ngIf="isLoggedIn$ | async">
+      <button (click)="toggleMobileMenu()" class="text-gray-300  cursor-pointer focus:outline-none focus:text-white">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path [class.hidden]="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          <path [class.hidden]="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <path [class.hidden]="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
+          <path [class.hidden]="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
 
-    <!-- Desktop menu -->
-    <div class="hidden md:flex space-x-4">
-      <a routerLink="/dashboard" class="text-gray-300 hover:text-white">Dashboard</a>
-      <a routerLink="/budgets" class="text-gray-300 hover:text-white">Budgets</a>
-      <a routerLink="/categories" class="text-gray-300 hover:text-white">Categories</a>
-      <a routerLink="/transactions" class="text-gray-300 hover:text-white">Transactions</a>
-      <a routerLink="/profile" class="text-gray-300 hover:text-white">Profile</a>
-      <a (click)="logout()" class="cursor-pointer text-gray-300 hover:text-white">Logout</a>
+    <!-- Desktop menu (Logged In) -->
+    <div class="hidden md:flex space-x-4" *ngIf="isLoggedIn$ | async">
+      <a routerLink="/dashboard" class="text-gray-900  cursor-pointer">Dashboard</a>
+      <a routerLink="/budgets" class="text-gray-900  cursor-pointer">Budgets</a>
+      <a routerLink="/categories" class="text-gray-900  cursor-pointer">Categories</a>
+      <a routerLink="/transactions" class="text-gray-900  cursor-pointer">Transactions</a>
+      <a routerLink="/recurring-transactions" class="text-gray-900  cursor-pointer">Recurring Transactions</a>
+      <a routerLink="/profile" class="text-gray-900  cursor-pointer">Profile</a>
+      <a (click)="logout()" class="text-gray-900  cursor-pointer">Logout</a>
     </div>
   </div>
+</div>
 
-  <!-- Mobile menu, show/hide based on menu state. -->
-  <div [class.hidden]="!mobileMenuOpen" class="md:hidden">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <a routerLink="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
-      <a routerLink="/budgets" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Budgets</a>
-      <a routerLink="/categories" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Categories</a>
-      <a routerLink="/transactions" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Transactions</a>
-      <a routerLink="/profile" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Profile</a>
-      <a (click)="logout()" class=" cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Logout</a>
-    </div>
+<!-- Mobile menu, show/hide based on menu state. (Logged In) -->
+<div [class.hidden]="!mobileMenuOpen" class="md:hidden" *ngIf="isLoggedIn$ | async">
+  <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+    <a routerLink="/dashboard" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+    <a routerLink="/budgets" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Budgets</a>
+    <a routerLink="/categories" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Categories</a>
+    <a routerLink="/transactions" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Transactions</a>
+    <a routerLink="/recurring-transactions" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Recurring Transactions</a>
+    <a routerLink="/profile" class="text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Profile</a>
+    <a (click)="logout()" class="cursor-pointer text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Logout</a>
   </div>
-</nav>
+</div>

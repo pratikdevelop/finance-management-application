@@ -1,4 +1,4 @@
-  <!-- Header -->
+<!-- Header -->
   <div class="bg-white border-b border-gray-200 px-6 py-4">
     <h2 mat-dialog-title class="text-xl font-semibold text-gray-800 m-0">
       {{ data.isEditing ? 'Edit Transaction' : 'Add Transaction' }}
@@ -93,6 +93,30 @@
             <div class="flex items-center gap-2 p-2">
               <div class="w-3 h-3 rounded-full bg-green-500"></div>
               <span class="text-gray-700">Income</span>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button value="transfer" class="flex-1">
+            <div class="flex items-center gap-2 p-2">
+              <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span class="text-gray-700">Transfer</span>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button value="investment" class="flex-1">
+            <div class="flex items-center gap-2 p-2">
+              <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+              <span class="text-gray-700">Investment</span>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button value="loan" class="flex-1">
+            <div class="flex items-center gap-2 p-2">
+              <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+              <span class="text-gray-700">Loan</span>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button value="saving" class="flex-1">
+            <div class="flex items-center gap-2 p-2">
+              <div class="w-3 h-3 rounded-full bg-teal-500"></div>
+              <span class="text-gray-700">Saving</span>
             </div>
           </mat-radio-button>
         </mat-radio-group>

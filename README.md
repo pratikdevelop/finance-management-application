@@ -5,7 +5,7 @@ This project consists of a Django backend and an Angular frontend for a personal
 ## Server URLs
 
 - **Backend API (Local):** `http://127.0.0.1:8000/`
-- **Backend API (Deployed):** `https://finance-management-application-3omi.onrender.com`
+- **Backend API (Deployed):** `https://finance-management-application-2omi.onrender.com`
 - **Frontend Application (Local):** `http://localhost:4200/`
 - **Frontend Application (Deployed - Netlify):** `https://finance-managemen-app.netlify.app`
 

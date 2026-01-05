@@ -11,6 +11,20 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-full my-3">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="first_name" placeholder="Enter your first name" required>
+        <mat-error *ngIf="signupForm.get('first_name')?.hasError('required')">
+          First Name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full my-3">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="last_name" placeholder="Enter your last name" required>
+        <mat-error *ngIf="signupForm.get('last_name')?.hasError('required')">
+          Last Name is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full my-3">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" type="email" placeholder="Enter your email" required>
         <mat-error *ngIf="signupForm.get('email')?.hasError('required')">

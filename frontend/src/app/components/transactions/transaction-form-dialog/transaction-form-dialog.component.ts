@@ -59,14 +59,17 @@ export class TransactionFormDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.transactionForm.get('transaction_type')?.valueChanges.subscribe(type => {
+      this.loadCategories(type);
+    });
+    this.loadCategories(this.transactionForm.get('transaction_type')?.value);
     if (this.data.isEditing && this.data.transaction) {
       this.patchForm(this.data.transaction);
     }
   }
 
-  loadCategories(): void {
-    this.apiService.getCategories().subscribe({
+  loadCategories(type: string): void {
+    this.apiService.getCategories(type).subscribe({
       next: (data) => {
         this.categories = data.results;
       },

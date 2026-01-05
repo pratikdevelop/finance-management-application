@@ -1,0 +1,300 @@
+  
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-to-br from-blue-600 to-purple-700 text-white py-20">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center" >
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+        AI-Powered Financial Insights
+      </h1>
+      <p class="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+        Leveraging Artificial Intelligence (AI) and Machine Learning (ML) to enhance financial decision-making processes.
+      </p>
+      <button (click)="navigateToGetStarted()" 
+              class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+        Get Started
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- AI Features Section -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16" >
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Advanced AI capabilities to transform your financial decision-making
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" >
+      <div *ngFor="let feature of aiFeatures" 
+           class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 ">
+        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-white" 
+             [ngClass]="getColorClass(feature.color)">
+          <i [class]="feature.icon" class="text-lg"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ feature.title }}</h3>
+        <p class="text-gray-600 leading-relaxed">{{ feature.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Features Section -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16" >
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Everything you need to manage your finances
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Comprehensive tools for personal and business financial management
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" >
+      <div *ngFor="let feature of coreFeatures" 
+           class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ">
+        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 text-white" 
+             [ngClass]="getColorClass(feature.color)">
+          <i [class]="feature.icon" class="text-lg"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ feature.title }}</h3>
+        <p class="text-gray-600 leading-relaxed">{{ feature.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EA Plans Section -->
+<section class="py-20 bg-gray-900 text-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Plans that grow with you</h2>
+      <div class="inline-flex bg-gray-700 rounded-lg p-1 mb-8">
+        <button class="px-4 py-2 text-sm font-medium rounded-md bg-gray-800 text-white">Individual</button>
+        <button class="px-4 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-600 hover:text-white">Team & Enterprise</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Free Plan Card -->
+      <div class="bg-gray-800 rounded-xl p-8 shadow-lg flex flex-col">
+        <div class="mb-6">
+          <i class="fa-solid fa-chart-line text-3xl text-gray-400 mb-4"></i>
+          <h3 class="text-2xl font-bold mb-2">Free Plan</h3>
+          <p class="text-gray-400 mb-4">Get started with basic insights</p>
+          <p class="text-4xl font-bold mb-6">$0</p>
+          <button class="w-full bg-gray-700 text-white py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors duration-200">
+            Start Free Trial
+          </button>
+        </div>
+        <div class="border-t border-gray-700 pt-6 flex-grow">
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Basic AI-powered financial insights
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Limited access to market data
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Standard financial reports
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Email support
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pro Plan Card -->
+      <div class="bg-gray-800 rounded-xl p-8 shadow-lg flex flex-col">
+        <div class="mb-6">
+          <i class="fa-solid fa-rocket text-3xl text-gray-400 mb-4"></i>
+          <h3 class="text-2xl font-bold mb-2">Pro Plan</h3>
+          <p class="text-gray-400 mb-4">Unlock advanced financial tools</p>
+          <p class="text-4xl font-bold mb-2">$49 <span class="text-lg font-normal text-gray-400">/ month</span></p>
+          <div class="flex items-center justify-center mb-6">
+            <span class="bg-blue-500 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Save 20% with annual billing</span>
+          </div>
+          <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200">
+            Get Pro Plan
+          </button>
+        </div>
+        <div class="border-t border-gray-700 pt-6 flex-grow">
+          <ul class="space-y-3 text-gray-300">
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Advanced AI insights and predictive analytics
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Real-time market data access
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Customizable financial reports
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Priority email and chat support
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-green-400 mr-2"></i>
+              Early access to new features
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Max Plan Card -->
+      <div class="bg-blue-600 rounded-xl p-8 shadow-lg flex flex-col border-2 border-blue-400">
+        <div class="mb-6">
+          <i class="fa-solid fa-crown text-3xl text-white mb-4"></i>
+          <h3 class="text-2xl font-bold mb-2">Max Plan</h3>
+          <p class="text-blue-200 mb-4">Ultimate financial intelligence</p>
+          <p class="text-4xl font-bold mb-6">$99 <span class="text-lg font-normal text-blue-200">/ month</span></p>
+          <button class="w-full bg-white text-blue-700 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
+            Get Max Plan
+          </button>
+        </div>
+        <div class="border-t border-blue-500 pt-6 flex-grow">
+          <ul class="space-y-3 text-blue-100">
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-white mr-2"></i>
+              All Pro features
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-white mr-2"></i>
+              Personalized AI models for investment strategies
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-white mr-2"></i>
+              Dedicated financial advisor
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-white mr-2"></i>
+              Exclusive market research and analysis
+            </li>
+            <li class="flex items-center">
+              <i class="fa-solid fa-check text-white mr-2"></i>
+              24/7 premium support
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16" >
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Trusted by thousands of users
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        See what our customers are saying about FinDash
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" >
+      <div *ngFor="let testimonial of testimonials" 
+           class="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 ">
+        <div class="text-gray-600 italic mb-6 leading-relaxed">
+          "{{ testimonial.quote }}"
+        </div>
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-semibold mr-4">
+            {{ testimonial.initials }}
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900">{{ testimonial.name }}</h4>
+            <p class="text-gray-600 text-sm">{{ testimonial.role }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center" >
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to dive in?</h2>
+      <p class="text-xl mb-8 opacity-90">Start your financial journey today.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button (click)="navigateToGetStarted()" 
+                class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+          Get started
+        </button>
+        <button class="bg-transparent border border-white text-white hover:bg-white hover:text-indigo-600 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+          Learn more
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <!-- Product -->
+      <div>
+        <h3 class="font-semibold text-lg mb-4">Product</h3>
+        <ul class="space-y-2">
+          <li *ngFor="let link of footerLinks.product">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">{{ link }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <h3 class="font-semibold text-lg mb-4">Company</h3>
+        <ul class="space-y-2">
+          <li *ngFor="let link of footerLinks.company">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">{{ link }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h3 class="font-semibold text-lg mb-4">Legal</h3>
+        <ul class="space-y-2">
+          <li *ngFor="let link of footerLinks.legal">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">{{ link }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Connect -->
+      <div>
+        <h3 class="font-semibold text-lg mb-4">Connect</h3>
+        <ul class="space-y-2">
+          <li *ngFor="let link of footerLinks.connect">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">{{ link }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+      <p class="text-gray-400 mb-4 md:mb-0">&copy; 2024 FinDash. All rights reserved.</p>
+      <div class="flex space-x-6">
+        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Privacy Policy</a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Terms of Service</a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>

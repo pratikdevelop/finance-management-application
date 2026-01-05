@@ -1,0 +1,196 @@
+<h2 mat-dialog-title class="text-2xl font-bold text-gray-800 mb-6 px-1">
+  {{ isEditing ? 'Edit Recurring Transaction' : 'Add New Recurring Transaction' }}
+</h2>
+
+<mat-dialog-content [formGroup]="recurringTransactionForm" class="space-y-6 px-1">
+  <!-- Description -->
+  <div class="form-group">
+    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+      Description <span class="text-red-500">*</span>
+    </label>
+    <mat-form-field appearance="outline" class="w-full">
+      <input 
+        matInput 
+        id="description"
+        formControlName="description" 
+        required 
+        placeholder="Enter transaction description"
+        class="text-base">
+      <mat-icon matSuffix class="text-gray-400">description</mat-icon>
+      <mat-error *ngIf="recurringTransactionForm.get('description')?.hasError('required')">
+        <div class="flex items-center mt-1 text-sm">
+          <mat-icon class="text-red-500 mr-1" style="font-size: 16px; width: 16px; height: 16px;">error</mat-icon>
+          Description is required
+        </div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Amount -->
+  <div class="form-group">
+    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">
+      Amount <span class="text-red-500">*</span>
+    </label>
+    <mat-form-field appearance="outline" class="w-full">
+      <span matPrefix class="text-gray-500 mr-1">$</span>
+      <input 
+        matInput 
+        id="amount"
+        type="number" 
+        formControlName="amount" 
+        required 
+        placeholder="0.00"
+        min="0.01"
+        step="0.01"
+        class="text-base">
+      <mat-icon matSuffix class="text-gray-400">attach_money</mat-icon>
+      <mat-error *ngIf="recurringTransactionForm.get('amount')?.hasError('required')">
+        <div class="flex items-center mt-1 text-sm">
+          <mat-icon class="text-red-500 mr-1" style="font-size: 16px; width: 16px; height: 16px;">error</mat-icon>
+          Amount is required
+        </div>
+      </mat-error>
+      <mat-error *ngIf="recurringTransactionForm.get('amount')?.hasError('min')">
+        <div class="flex items-center mt-1 text-sm">
+          <mat-icon class="text-red-500 mr-1" style="font-size: 16px; width: 16px; height: 16px;">error</mat-icon>
+          Amount must be greater than 0
+        </div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Category -->
+  <div class="form-group">
+    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
+      Category <span class="text-red-500">*</span>
+    </label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select 
+        id="category"
+        formControlName="category" 
+        required
+        placeholder="Select a category">
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          <div class="flex items-center">
+            <div class="w-3 h-3 rounded-full mr-2" [style.background-color]="category.color || '#6b7280'"></div>
+            {{ category.name }}
+          </div>
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix class="text-gray-400">category</mat-icon>
+      <mat-error *ngIf="recurringTransactionForm.get('category')?.hasError('required')">
+        <div class="flex items-center mt-1 text-sm">
+          <mat-icon class="text-red-500 mr-1" style="font-size: 16px; width: 16px; height: 16px;">error</mat-icon>
+          Category is required
+        </div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Frequency -->
+  <div class="form-group">
+    <label for="frequency" class="block text-sm font-medium text-gray-700 mb-1">
+      Frequency <span class="text-red-500">*</span>
+    </label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select 
+        id="frequency"
+        formControlName="frequency" 
+        required
+        placeholder="Select frequency">
+        <mat-option *ngFor="let freq of frequencies" [value]="freq">
+          <div class="flex items-center">
+            <mat-icon class="mr-2 text-gray-500" style="font-size: 18px;">
+              {{ getFrequencyIcon(freq) }}
+            </mat-icon>
+            {{ freq | titlecase }}
+          </div>
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix class="text-gray-400">update</mat-icon>
+      <mat-error *ngIf="recurringTransactionForm.get('frequency')?.hasError('required')">
+        <div class="flex items-center mt-1 text-sm">
+          <mat-icon class="text-red-500 mr-1" style="font-size: 16px; width: 16px; height: 16px;">error</mat-icon>
+          Frequency is required
+        </div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Date Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Start Date -->
+    <div class="form-group">
+      <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">
+        Start Date <span class="text-red-500">*</span>
+      </label>
+      <mat-form-field appearance="outline" class="w-full">
+        <input 
+          matInput 
+          id="start_date"
+          [matDatepicker]="startDatePicker" 
+          formControlName="start_date" 
+          required
+          placeholder="Select start date">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker">
+          <mat-icon matDatepickerToggleIcon class="text-gray-500">calendar_today</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+        <mat-error *ngIf="recurringTransactionForm.get('start_date')?.hasError('required')">
+          <div class="flex items-center mt-1 text-sm">
+            <mat-icon class="text-red-500 mr-1" style="font-size: 16px; width: 16px; height: 16px;">error</mat-icon>
+            Start Date is required
+          </div>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- End Date -->
+    <div class="form-group">
+      <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">
+        End Date <span class="text-gray-500 text-xs">(Optional)</span>
+      </label>
+      <mat-form-field appearance="outline" class="w-full">
+        <input 
+          matInput 
+          id="end_date"
+          [matDatepicker]="endDatePicker" 
+          formControlName="end_date"
+          placeholder="Select end date (optional)">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker">
+          <mat-icon matDatepickerToggleIcon class="text-gray-500">calendar_today</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Form Status -->
+  <div *ngIf="recurringTransactionForm.invalid && recurringTransactionForm.touched" 
+       class="bg-red-50 border border-red-200 rounded-md p-3 mt-2">
+    <div class="flex items-center">
+      <mat-icon class="text-red-500 mr-2" style="font-size: 18px;">warning</mat-icon>
+      <span class="text-red-700 text-sm font-medium">Please complete all required fields</span>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pt-6 pb-2 px-1 border-t border-gray-200 mt-4">
+  <button 
+    mat-button 
+    (click)="onCancel()" 
+    class="px-5 py-2.5 rounded-lg font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="recurringTransactionForm.invalid"
+    class="px-5 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+    <span class="flex items-center">
+      <mat-icon class="mr-1" style="font-size: 18px;">{{ isEditing ? 'save' : 'add' }}</mat-icon>
+      {{ isEditing ? 'Save Changes' : 'Add Transaction' }}
+    </span>
+  </button>
+</mat-dialog-actions>

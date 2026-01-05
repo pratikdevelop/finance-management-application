@@ -44,6 +44,8 @@ export class AuthService {
   }
 
   loginUser(userData: any): Observable<any> {
+    console.log("ffds;f'");
+    
     return this.http.post(`${environment.apiUrl}/api/login/`, userData);
   }
   

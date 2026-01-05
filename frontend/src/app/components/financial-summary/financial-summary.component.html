@@ -98,6 +98,61 @@
       </mat-card>
     </div>
 
+    <!-- Recurring Transaction Summary Cards -->
+    <div *ngIf="!loading && recurringTransactionSummary" class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+      <!-- Total Active Card -->
+      <mat-card class="summary-card bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-500">
+        <mat-card-content class="p-4">
+          <div class="flex items-center mb-3">
+            <div class="p-2 rounded-lg bg-blue-500 bg-opacity-10 mr-3">
+              <mat-icon class="text-blue-600">check_circle_outline</mat-icon>
+            </div>
+            <span class="text-gray-600 font-medium">Total Active</span>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-gray-800">{{ recurringTransactionSummary.total_active }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Monthly Total Card -->
+      <mat-card class="summary-card bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-500">
+        <mat-card-content class="p-4">
+          <div class="flex items-center mb-3">
+            <div class="p-2 rounded-lg bg-green-500 bg-opacity-10 mr-3">
+              <mat-icon class="text-green-600">calendar_today</mat-icon>
+            </div>
+            <span class="text-gray-600 font-medium">Monthly Total</span>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-gray-800">{{ recurringTransactionSummary.monthly_total | currency }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Next 7 Days Card -->
+      <mat-card class="summary-card bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-500">
+        <mat-card-content class="p-4">
+          <div class="flex items-center mb-3">
+            <div class="p-2 rounded-lg bg-purple-500 bg-opacity-10 mr-3">
+              <mat-icon class="text-purple-600">event</mat-icon>
+            </div>
+            <span class="text-gray-600 font-medium">Next 7 Days</span>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-gray-800">{{ recurringTransactionSummary.next_7_days }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- All Transactions Card -->
+      <mat-card class="summary-card bg-gradient-to-br from-gray-50 to-gray-100 border-l-4 border-gray-500">
+        <mat-card-content class="p-4">
+          <div class="flex items-center mb-3">
+            <div class="p-2 rounded-lg bg-gray-500 bg-opacity-10 mr-3">
+              <mat-icon class="text-gray-600">list_alt</mat-icon>
+            </div>
+            <span class="text-gray-600 font-medium">All Transactions</span>
+          </div>
+          <p class="text-2xl md:text-3xl font-bold text-gray-800">{{ recurringTransactionSummary.all_transactions }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
     <!-- Charts Grid -->
     <div *ngIf="!loading && summaryData" class="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6">
       <!-- Income vs Expenses Chart -->

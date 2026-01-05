@@ -21,6 +21,8 @@ export class ProfileComponent implements OnInit {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       memberSince: [''],
+      first_name: [''],
+      last_name: [''],
     });
 
     this.userService.getProfile().subscribe(data => {
@@ -28,6 +30,8 @@ export class ProfileComponent implements OnInit {
       this.profileForm.get('memberSince')?.setValue(data.member_since);
       this.profileForm.get('email')?.setValue(data.email);
       this.profileForm.get('username')?.setValue(data.username);
+      this.profileForm.get('first_name')?.setValue(data.first_name);
+      this.profileForm.get('last_name')?.setValue(data.last_name);
 
     });
   }

@@ -3,6 +3,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './auth.guard';
 import { publicGuard } from './public.guard';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 export const routes: Routes = [
   { path: 'auth/signup', 
@@ -29,7 +30,11 @@ export const routes: Routes = [
     loadComponent:() => import('./profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [authGuard]
   },
-
+  {
+    path: "recurring-transactions",
+    loadComponent: () => import('./components/recurring-transactions/recurring-transactions-list.component').then(m => m.RecurringTransactionsListComponent),
+    canActivate: [authGuard]
+  },
   {
     path: "transactions",
     loadComponent: () => import('./components/transactions/transactions.component').then(m => m.TransactionsComponent),
@@ -46,8 +51,14 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path:"",
-    redirectTo: 'auth/signup',
-    pathMatch: 'full'
-  }
+    path: "predictive-analytics",
+    loadComponent: () => import('./components/predictive-analytics/predictive-analytics.component').then(m => m.PredictiveAnalyticsComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: '',
+    component: LandingPageComponent,
+    canActivate: [publicGuard]
+  },
+  { path: '**', redirectTo: '' }
 ];

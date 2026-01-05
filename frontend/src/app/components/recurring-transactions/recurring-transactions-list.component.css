@@ -1,0 +1,15 @@
+table {
+  width: 100%;
+}
+
+.mat-card {
+  margin: 20px;
+}
+
+.mat-card-title {
+  margin-bottom: 20px;
+}
+
+.mat-raised-button {
+  margin-bottom: 20px;
+}
